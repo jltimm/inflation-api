@@ -1,0 +1,29 @@
+{
+  "name": "inflation-api",
+  "version": "0.0.1",
+  "description": "Provides inflation data via a RESTful API",
+  "main": "inflation.js",
+  "scripts": {
+    "start": "node ./src/inflation.js --start",
+    "test": "jest --detectOpenHandles"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jltimm/inflation-api.git"
+  },
+  "author": "Jacob Timm",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jltimm/inflation-api/issues"
+  },
+  "homepage": "https://github.com/jltimm/inflation-api#readme",
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-google": "^0.14.0",
+    "jest": "^25.4.0",
+    "supertest": "^4.0.2"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
