@@ -1,5 +1,6 @@
 const dateParser = require('../parser/dateParser');
 const parseAmount = require('../parser/amountParser');
+const parseCurrency = require('../parser/currencyParser');
 
 module.exports = {validateRequest};
 
@@ -83,12 +84,7 @@ function validateCurrency(paramName, currency) {
   if (currency == null) {
     return {error: paramName + ' is missing'};
   }
-  // TODO: Temporary. Grab list from database later
-  if (currency !== 'USD') {
-    return {error: paramName +
-      ' [' + currency + '] is not a supported currency.'};
-  }
-  return {currency: currency};
+  return parseCurrency(currency);
 }
 
 /**
