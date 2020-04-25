@@ -1,4 +1,4 @@
-const dateParser = require('../parser/dateParser');
+const parseDate = require('../parser/dateParser');
 const parseAmount = require('../parser/amountParser');
 const parseCurrency = require('../parser/currencyParser');
 
@@ -98,11 +98,7 @@ function validateDate(paramName, rawDate) {
   if (rawDate == null) {
     return {error: paramName + ' is missing'};
   }
-  const date = dateParser.parseDate(rawDate);
-  if (date == null) {
-    return {error: paramName + ' not a valid date.'};
-  }
-  return date;
+  return parseDate(rawDate);
 }
 
 /**
