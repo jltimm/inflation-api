@@ -1,4 +1,4 @@
-const {DateTime} = require('luxon');
+const dateParser = require('../../parser/dateParser');
 
 module.exports = {validateRequest};
 
@@ -17,8 +17,24 @@ function validateRequest(req) {
   const errors = [];
   errors.push(validateCurrency('start_currency', req.query.start_currency));
   errors.push(validateCurrency('end_currency', req.query.end_currency));
-  errors.push(validateDate('start_date', req.query.start_date));
-  errors.push(validateDate('end_date', req.query.end_date));
+
+  const startDate = validateDate('start_date', req.query.start_date);
+  if (startDate.error !== null) {
+    errors.push(startDate.error);
+  }
+
+  const endDate = validateDate('end_date', req.query.end_date);
+  if (endDate.error !== null) {
+    errors.push(endDate.error);
+  }
+
+  if (!endDate.error && !startDate.error) {
+    if (endDate.year < startDate.year ||
+       (endDate.year == startDate.year && (endDate.month < startDate.month))) {
+      errors.push('end_date must be before start_date');
+    }
+  }
+
   errors.push(validateAmount('amount', req.query.amount));
   const filtered = errors.filter((el) => {
     return el != null;
@@ -51,7 +67,7 @@ function constructErrorMessage(errors) {
  */
 function validateCurrency(paramName, currency) {
   if (currency == null) {
-    return paramName + ' missing';
+    return paramName + ' is missing';
   }
   // TODO: Temporary. Grab list from database later
   if (currency !== 'USD') {
@@ -64,19 +80,18 @@ function validateCurrency(paramName, currency) {
  * Validates the date. Dates must be in yyyy-mm-dd format.
  *
  * @param {String} paramName Name of the param: start_date or end_date
- * @param {String} date The date
+ * @param {String} rawDate The raw
  * @return {String} The error
  */
-function validateDate(paramName, date) {
+function validateDate(paramName, rawDate) {
+  if (rawDate == null) {
+    return {error: paramName + ' is missing'};
+  }
+  const date = dateParser.parseDate(rawDate);
   if (date == null) {
-    return paramName + ' missing';
+    return {error: paramName + ' not a valid date.'};
   }
-  // TODO: Make a more customizable date parser
-  const d = DateTime.fromFormat(date, 'yyyy-MM');
-  if (!d.isValid) {
-    return paramName + ' not a valid date. Reason: ' + d.invalidReason;
-  }
-  return null;
+  return date;
 }
 
 /**
@@ -88,7 +103,7 @@ function validateDate(paramName, date) {
  */
 function validateAmount(paramName, amount) {
   if (amount == null) {
-    return paramName + ' missing';
+    return paramName + ' is missing';
   }
   const parsedAmount = parseInt(amount);
   if (isNaN(parsedAmount)) {
