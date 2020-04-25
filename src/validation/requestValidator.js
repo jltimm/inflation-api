@@ -35,7 +35,11 @@ function validateRequest(req) {
     }
   }
 
-  errors.push(validateAmount('amount', req.query.amount));
+  const amount = validateAmount('amount', req.query.amount);
+  if (amount.error !== null) {
+    errors.push(amount.error);
+  }
+
   const filtered = errors.filter((el) => {
     return el != null;
   });
@@ -98,16 +102,19 @@ function validateDate(paramName, rawDate) {
  * Validates the amount. Must be a valid decimal.
  *
  * @param {String} paramName Name of the param: amount
- * @param {String} amount The amount
+ * @param {String} rawAmount The amount
  * @return {String} The error
  */
-function validateAmount(paramName, amount) {
-  if (amount == null) {
-    return paramName + ' is missing';
+function validateAmount(paramName, rawAmount) {
+  if (rawAmount == null) {
+    return {error: paramName + ' is missing'};
   }
-  const parsedAmount = parseInt(amount);
-  if (isNaN(parsedAmount)) {
-    return paramName + ' is not a number';
+  const amount = parseInt(rawAmount);
+  if (isNaN(amount)) {
+    return {error: paramName + ' is not a number'};
   }
-  return null;
+  if (amount <= 0) {
+    return {error: paramName + ' must be greater than zero'};
+  }
+  return {amount: amount};
 }
