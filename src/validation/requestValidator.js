@@ -15,8 +15,17 @@ module.exports = {validateRequest};
  */
 function validateRequest(req) {
   const errors = [];
-  errors.push(validateCurrency('start_currency', req.query.start_currency));
-  errors.push(validateCurrency('end_currency', req.query.end_currency));
+
+  const startCurrency =
+    validateCurrency('start_currency', req.query.start_currency);
+  if (startCurrency.error !== null) {
+    errors.push(startCurrency.error);
+  }
+
+  const endCurrency = validateCurrency('end_currency', req.query.end_currency);
+  if (endCurrency.error !== null) {
+    errors.push(endCurrency.error);
+  }
 
   const startDate = validateDate('start_date', req.query.start_date);
   if (startDate.error !== null) {
@@ -71,13 +80,14 @@ function constructErrorMessage(errors) {
  */
 function validateCurrency(paramName, currency) {
   if (currency == null) {
-    return paramName + ' is missing';
+    return {error: paramName + ' is missing'};
   }
   // TODO: Temporary. Grab list from database later
   if (currency !== 'USD') {
-    return paramName + ' is not a supported currency.';
+    return {error: paramName +
+      ' [' + currency + '] is not a supported currency.'};
   }
-  return null;
+  return {currency: currency};
 }
 
 /**
