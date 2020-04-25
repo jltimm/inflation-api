@@ -1,4 +1,5 @@
 const dateParser = require('../parser/dateParser');
+const parseAmount = require('../parser/amountParser');
 
 module.exports = {validateRequest};
 
@@ -119,12 +120,5 @@ function validateAmount(paramName, rawAmount) {
   if (rawAmount == null) {
     return {error: paramName + ' is missing'};
   }
-  const amount = parseInt(rawAmount);
-  if (isNaN(amount)) {
-    return {error: paramName + ' is not a number'};
-  }
-  if (amount <= 0) {
-    return {error: paramName + ' must be greater than zero'};
-  }
-  return {amount: amount};
+  return parseAmount(rawAmount);
 }
