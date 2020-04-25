@@ -1,4 +1,4 @@
-const dateParser = require('../../parser/dateParser');
+const dateParser = require('../parser/dateParser');
 
 module.exports = {validateRequest};
 
