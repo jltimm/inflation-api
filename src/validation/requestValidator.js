@@ -77,14 +77,14 @@ function constructErrorMessage(errors) {
  * Validates the currency parameter
  *
  * @param {String} paramName Name of the param: start_currency or end_currency
- * @param {String} currency Value of the param
- * @return {String} The error
+ * @param {String} rawCurrency Value of the param
+ * @return {JSON} The parsed value (could contain error)
  */
-function validateCurrency(paramName, currency) {
-  if (currency == null) {
+function validateCurrency(paramName, rawCurrency) {
+  if (rawCurrency == null) {
     return {error: paramName + ' is missing'};
   }
-  return parseCurrency(currency);
+  return padWithParam(paramName, parseCurrency(rawCurrency));
 }
 
 /**
@@ -92,13 +92,13 @@ function validateCurrency(paramName, currency) {
  *
  * @param {String} paramName Name of the param: start_date or end_date
  * @param {String} rawDate The raw
- * @return {String} The error
+ * @return {JSON} The parsed value (could contain error)
  */
 function validateDate(paramName, rawDate) {
   if (rawDate == null) {
     return {error: paramName + ' is missing'};
   }
-  return parseDate(rawDate);
+  return padWithParam(paramName, parseDate(rawDate));
 }
 
 /**
@@ -106,11 +106,25 @@ function validateDate(paramName, rawDate) {
  *
  * @param {String} paramName Name of the param: amount
  * @param {String} rawAmount The amount
- * @return {String} The error
+ * @return {JSON} The parsed value (could contain error)
  */
 function validateAmount(paramName, rawAmount) {
   if (rawAmount == null) {
     return {error: paramName + ' is missing'};
   }
-  return parseAmount(rawAmount);
+  return padWithParam(paramName, parseAmount(rawAmount));
+}
+
+/**
+ * Appends paramName to the error message, if present
+ *
+ * @param {String} paramName The name of the parameter
+ * @param {JSON} value The value from the parsed function
+ * @return {JSON} The value with the modified error message
+ */
+function padWithParam(paramName, value) {
+  if (!!value.error) {
+    value.error = paramName + ': ' + value.error;
+  }
+  return value;
 }
