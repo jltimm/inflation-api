@@ -10,67 +10,88 @@ module.exports = {validateRequest};
  * end_currency
  * start_date
  * end_date
- * amuont
+ * amount
  *
  * @param {JSON} req The request
- * @return {JSON} The error message
+ * @return {JSON} The response. Could be an error or a good response
  */
 function validateRequest(req) {
-  const errors = [];
-
-  const startCurrency =
-    validateCurrency('start_currency', req.query.start_currency);
-  if (startCurrency.error !== null) {
-    errors.push(startCurrency.error);
-  }
-
-  const endCurrency = validateCurrency('end_currency', req.query.end_currency);
-  if (endCurrency.error !== null) {
-    errors.push(endCurrency.error);
-  }
-
-  const startDate = validateDate('start_date', req.query.start_date);
-  if (startDate.error !== null) {
-    errors.push(startDate.error);
-  }
-
-  const endDate = validateDate('end_date', req.query.end_date);
-  if (endDate.error !== null) {
-    errors.push(endDate.error);
-  }
-
-  if (!endDate.error && !startDate.error) {
-    if (endDate.year < startDate.year ||
-       (endDate.year == startDate.year && (endDate.month < startDate.month))) {
-      errors.push('end_date must be before start_date');
-    }
-  }
-
-  const amount = validateAmount('amount', req.query.amount);
-  if (amount.error !== null) {
-    errors.push(amount.error);
-  }
-
-  const filtered = errors.filter((el) => {
-    return el != null;
-  });
-  return constructErrorMessage(filtered);
+  return constructResponse(
+      validateCurrency('start_currency', req.query.start_currency),
+      validateCurrency('end_currency', req.query.end_currency),
+      validateDate('start_date', req.query.start_date),
+      validateDate('end_date', req.query.end_date),
+      validateAmount('amount', req.query.amount),
+  );
 }
 
 /**
- * Constructs an error message from the list of errors
+ * Constructs a reponse based on how each parameter was validated.
  *
- * @param {Array} errors
- * @return {JSON} The error message. If no errors, then null
+ * @param {JSON} startCurrency The validated start currency
+ * @param {JSON} endCurrency The validated end currency
+ * @param {JSON} startDate The validated start date
+ * @param {JSON} endDate The validated end date
+ * @param {JSON} amount The validated amount
+ * @return {JSON} The response
  */
-function constructErrorMessage(errors) {
-  if (errors.length == 0) {
-    return null;
+function constructResponse(
+    startCurrency,
+    endCurrency,
+    startDate,
+    endDate,
+    amount,
+) {
+  const errors = [];
+  const response = {};
+  if (!!startCurrency.error) {
+    errors.push(startCurrency.error);
+  } else {
+    response.start_currency = startCurrency.currency;
   }
-  return {
-    'message': 'The request is invalid.',
-    'errors': errors,
-  };
+  if (!!endCurrency.error) {
+    errors.push(endCurrency.error);
+  } else {
+    response.end_currency = endCurrency.currency;
+  }
+  if (!!startDate.error) {
+    errors.push(startDate.error);
+  } else {
+    response.start_date = startDate;
+  }
+  if (!!endDate.error) {
+    errors.push(endDate.error);
+  } else {
+    response.endDate = endDate;
+  }
+  if (isEndDateBeforeStartDate(startDate, endDate)) {
+    errors.push('end_date must be after start_date');
+  }
+  if (!!amount.error) {
+    errors.push(amount.error);
+  } else {
+    response.amount = amount.amount;
+  }
+  return errors.length == 0 ?
+          response :
+          {message: 'There was an error with the request', errors: errors};
+}
+
+/**
+ * Checks if the end date is before the start date
+ *
+ * @param {JSON} startDate The start date
+ * @param {JSON} endDate The end date
+ * @return {Boolean} If the end date is before the start date
+ */
+function isEndDateBeforeStartDate(startDate, endDate) {
+  if (!endDate.error && !startDate.error) {
+    if (endDate.year < startDate.year ||
+       (endDate.year == startDate.year && (endDate.month < startDate.month))) {
+      return true;
+    }
+  }
+  return false;
 }
 
 /**
