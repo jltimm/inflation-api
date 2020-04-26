@@ -12,10 +12,10 @@ module.exports = calculateRouter;
  * @param {JSON} res The response
  */
 function getInflationRate(req, res) {
-  const err = validationService.validateRequest(req);
-  if (!!err) {
-    res.status(400).send(err);
+  const response = validationService.validateRequest(req);
+  if (!!response.errors) {
+    res.status(400).send(response);
     return;
   }
-  res.send('TODO');
+  res.send(response);
 }
