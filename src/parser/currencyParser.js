@@ -1,3 +1,5 @@
+const constants = require('../constants/currencyParserConstants');
+
 module.exports = parseCurrency;
 
 /**
@@ -11,7 +13,7 @@ function parseCurrency(rawCurrency) {
   const currency = rawCurrency.toLowerCase().trim();
   // TODO: Temporary. Grab list from database later
   if (currency !== 'usd') {
-    return {error: '[' + rawCurrency + '] is not a supported currency.'};
+    return {error: constants.notSupported(rawCurrency)};
   }
   return {currency: currency};
 }
