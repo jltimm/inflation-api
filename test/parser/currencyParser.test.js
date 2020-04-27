@@ -4,12 +4,12 @@ describe('Currency parser: Invalid currency', () => {
   test('Currency is not valid', () => {
     const parsedCurrency = parseCurrency('US');
     expect(parsedCurrency)
-        .toEqual({error: '[US] is not a supported currency.'});
+        .toEqual({error: '[US] is not a supported currency'});
   });
   test('Currency is not valid, with spaces', () => {
     const parsedCurrency = parseCurrency('uS D  ');
     expect(parsedCurrency)
-        .toEqual({error: '[uS D  ] is not a supported currency.'});
+        .toEqual({error: '[uS D  ] is not a supported currency'});
   });
 });
 

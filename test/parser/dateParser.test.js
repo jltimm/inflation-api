@@ -3,31 +3,31 @@ const parseDate = require('../../src/parser/dateParser');
 describe('Date parser: Invalid dates', () => {
   test('Does not contain \'-\'', () => {
     const date = parseDate('2020/02');
-    expect(date).toEqual({error: 'Date must be of the form YYYY-MM'});
+    expect(date).toEqual({error: '[2020/02] must be of the form YYYY-MM'});
   });
   test('Month greater than 12', () => {
     const date = parseDate('2020-13');
-    expect(date).toEqual({error: 'Month must be between 1 and 12'});
+    expect(date).toEqual({error: '[2020-13] month must be between 1 and 12'});
   });
   test('Month less than 1', () => {
     const date = parseDate('2020-00');
-    expect(date).toEqual({error: 'Month must be between 1 and 12'});
+    expect(date).toEqual({error: '[2020-00] month must be between 1 and 12'});
   });
   test('Year is not valid', () => {
     const date = parseDate('bad-01');
-    expect(date).toEqual({error: 'Invalid characters found'});
+    expect(date).toEqual({error: '[bad-01] contains invalid characters'});
   });
   test('Month is not valid', () => {
     const date = parseDate('2020-bad');
-    expect(date).toEqual({error: 'Invalid characters found'});
+    expect(date).toEqual({error: '[2020-bad] contains invalid characters'});
   });
   test('Year is zero (no such thing as year 0!)', () => {
     const date = parseDate('0000-12');
-    expect(date).toEqual({error: 'Year must not be zero'});
+    expect(date).toEqual({error: '[0000-12] year must not be zero'});
   });
   test('Year is negative zero', () => {
     const date = parseDate('-0-01');
-    expect(date).toEqual({error: 'Year must not be zero'});
+    expect(date).toEqual({error: '[-0-01] year must not be zero'});
   });
 });
 

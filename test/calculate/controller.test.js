@@ -58,7 +58,7 @@ describe('Inflation controller tests: bad requests', () => {
     expect(res.body).toEqual({
       message: 'There was an error with the request',
       errors: [
-        'start_currency: [US] is not a supported currency.',
+        'start_currency: [US] is not a supported currency',
       ],
     });
   });
@@ -71,7 +71,7 @@ describe('Inflation controller tests: bad requests', () => {
     expect(res.body).toEqual({
       message: 'There was an error with the request',
       errors: [
-        'end_currency: [AA] is not a supported currency.',
+        'end_currency: [AA] is not a supported currency',
       ],
     });
   });
@@ -84,7 +84,7 @@ describe('Inflation controller tests: bad requests', () => {
     expect(res.body).toEqual({
       message: 'There was an error with the request',
       errors: [
-        'start_date: Date must be of the form YYYY-MM',
+        'start_date: [200101] must be of the form YYYY-MM',
       ],
     });
   });
@@ -97,7 +97,7 @@ describe('Inflation controller tests: bad requests', () => {
     expect(res.body).toEqual({
       message: 'There was an error with the request',
       errors: [
-        'start_date: Invalid characters found',
+        'start_date: [200A-01] contains invalid characters',
       ],
     });
   });
@@ -110,7 +110,7 @@ describe('Inflation controller tests: bad requests', () => {
     expect(res.body).toEqual({
       message: 'There was an error with the request',
       errors: [
-        'start_date: Invalid characters found',
+        'start_date: [2001-A1] contains invalid characters',
       ],
     });
   });
@@ -123,7 +123,7 @@ describe('Inflation controller tests: bad requests', () => {
     expect(res.body).toEqual({
       message: 'There was an error with the request',
       errors: [
-        'start_date: Month must be between 1 and 12',
+        'start_date: [2001-00] month must be between 1 and 12',
       ],
     });
   });
@@ -136,7 +136,7 @@ describe('Inflation controller tests: bad requests', () => {
     expect(res.body).toEqual({
       message: 'There was an error with the request',
       errors: [
-        'start_date: Month must be between 1 and 12',
+        'start_date: [2001-13] month must be between 1 and 12',
       ],
     });
   });
@@ -149,7 +149,7 @@ describe('Inflation controller tests: bad requests', () => {
     expect(res.body).toEqual({
       message: 'There was an error with the request',
       errors: [
-        'start_date: Year must not be zero',
+        'start_date: [0000-12] year must not be zero',
       ],
     });
   });
@@ -162,7 +162,7 @@ describe('Inflation controller tests: bad requests', () => {
     expect(res.body).toEqual({
       message: 'There was an error with the request',
       errors: [
-        'end_date: Date must be of the form YYYY-MM',
+        'end_date: [202001] must be of the form YYYY-MM',
       ],
     });
   });
@@ -175,7 +175,7 @@ describe('Inflation controller tests: bad requests', () => {
     expect(res.body).toEqual({
       message: 'There was an error with the request',
       errors: [
-        'end_date: Invalid characters found',
+        'end_date: [20F0-01] contains invalid characters',
       ],
     });
   });
@@ -188,7 +188,7 @@ describe('Inflation controller tests: bad requests', () => {
     expect(res.body).toEqual({
       message: 'There was an error with the request',
       errors: [
-        'end_date: Invalid characters found',
+        'end_date: [2020-A1] contains invalid characters',
       ],
     });
   });
@@ -201,7 +201,7 @@ describe('Inflation controller tests: bad requests', () => {
     expect(res.body).toEqual({
       message: 'There was an error with the request',
       errors: [
-        'end_date: Month must be between 1 and 12',
+        'end_date: [2020-00] month must be between 1 and 12',
       ],
     });
   });
@@ -214,7 +214,7 @@ describe('Inflation controller tests: bad requests', () => {
     expect(res.body).toEqual({
       message: 'There was an error with the request',
       errors: [
-        'end_date: Month must be between 1 and 12',
+        'end_date: [2020-13] month must be between 1 and 12',
       ],
     });
   });
@@ -227,7 +227,7 @@ describe('Inflation controller tests: bad requests', () => {
     expect(res.body).toEqual({
       message: 'There was an error with the request',
       errors: [
-        'end_date: Year must not be zero',
+        'end_date: [0000-01] year must not be zero',
       ],
     });
   });
@@ -266,10 +266,10 @@ describe('Inflation controller tests: bad requests', () => {
     expect(res.body).toEqual({
       message: 'There was an error with the request',
       errors: [
-        'start_currency: [US] is not a supported currency.',
-        'end_currency: [U] is not a supported currency.',
-        'start_date: Invalid characters found',
-        'end_date: Date must be of the form YYYY-MM',
+        'start_currency: [US] is not a supported currency',
+        'end_currency: [U] is not a supported currency',
+        'start_date: [abcd-a] contains invalid characters',
+        'end_date: [2020/01] must be of the form YYYY-MM',
         'amount: [-2.0] must be greater than zero',
       ],
     });

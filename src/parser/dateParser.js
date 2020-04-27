@@ -1,3 +1,5 @@
+const constants = require('../constants/dateParserConstants');
+
 module.exports = parseDate;
 
 /**
@@ -13,21 +15,21 @@ function parseDate(rawDate) {
       rawDate.substring(1).split('-') :
       rawDate.split('-');
   if (splitDate.length !== 2) {
-    return {error: 'Date must be of the form YYYY-MM'};
+    return {error: constants.mustBeYYYYMM(rawDate)};
   }
   const rawYear = isNegative ? '-' + splitDate[0] : splitDate[0];
   const rawMonth = splitDate[1];
   const reg = /^-?\d+$/;
   if (!reg.test(rawYear) || !reg.test(rawMonth)) {
-    return {error: 'Invalid characters found'};
+    return {error: constants.invalidCharacters(rawDate)};
   }
   const year = parseInt(rawYear);
   const month = parseInt(rawMonth);
   if (month > 12 || month < 1) {
-    return {error: 'Month must be between 1 and 12'};
+    return {error: constants.invalidMonth(rawDate)};
   }
   if (year == 0) {
-    return ({error: 'Year must not be zero'});
+    return {error: constants.yearZero(rawDate)};
   }
   return {
     year: year,
