@@ -1,3 +1,5 @@
+const constants = require('../constants/amountParserConstants');
+
 module.exports = parseAmount;
 
 /**
@@ -11,14 +13,14 @@ function parseAmount(rawAmount) {
   const amountNoCommas = rawAmount.replace(/,/g, '');
   const reg = /^-?\d*\.?\d*$/;
   if (!reg.test(amountNoCommas)) {
-    return {error: 'Not a number'};
+    return {error: constants.notANumber(rawAmount)};
   }
   const amount = parseFloat(amountNoCommas);
   if (isNaN(amount)) {
-    return {error: 'Not a number'};
+    return {error: constants.notANumber(rawAmount)};
   }
   if (amount <= 0) {
-    return {error: 'Must be greater than zero'};
+    return {error: constants.lessThanZero(rawAmount)};
   }
   return {amount: amount};
 }

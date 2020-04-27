@@ -3,19 +3,19 @@ const parseAmount = require('../../src/parser/amountParser');
 describe('Amount parser: Invalid amounts', () => {
   test('Amount is not a number', () => {
     const parsedAmount = parseAmount('9asd34ndd');
-    expect(parsedAmount).toEqual({error: 'Not a number'});
+    expect(parsedAmount).toEqual({error: '[9asd34ndd] is not a number'});
   });
   test('Amount is zero', () => {
     const parsedAmount = parseAmount('0');
-    expect(parsedAmount).toEqual({error: 'Must be greater than zero'});
+    expect(parsedAmount).toEqual({error: '[0] must be greater than zero'});
   });
   test('Amount is negative', () => {
     const parsedAmount = parseAmount('-0.1');
-    expect(parsedAmount).toEqual({error: 'Must be greater than zero'});
+    expect(parsedAmount).toEqual({error: '[-0.1] must be greater than zero'});
   });
   test('Amount is not a number, letters in decimal', () => {
     const parsedAmount = parseAmount('111,111.0F');
-    expect(parsedAmount).toEqual({error: 'Not a number'});
+    expect(parsedAmount).toEqual({error: '[111,111.0F] is not a number'});
   });
 });
 

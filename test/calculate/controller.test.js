@@ -240,7 +240,7 @@ describe('Inflation controller tests: bad requests', () => {
     expect(res.body).toEqual({
       message: 'There was an error with the request',
       errors: [
-        'amount: Not a number',
+        'amount: [abd] is not a number',
       ],
     });
   });
@@ -253,7 +253,7 @@ describe('Inflation controller tests: bad requests', () => {
     expect(res.body).toEqual({
       message: 'There was an error with the request',
       errors: [
-        'amount: Must be greater than zero',
+        'amount: [-1] must be greater than zero',
       ],
     });
   });
@@ -270,7 +270,7 @@ describe('Inflation controller tests: bad requests', () => {
         'end_currency: [U] is not a supported currency.',
         'start_date: Invalid characters found',
         'end_date: Date must be of the form YYYY-MM',
-        'amount: Must be greater than zero',
+        'amount: [-2.0] must be greater than zero',
       ],
     });
   });
