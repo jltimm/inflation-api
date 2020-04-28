@@ -48,17 +48,17 @@ function constructResponse(
   if (!!startCurrency.error) {
     errors.push(startCurrency.error);
   } else {
-    response.start_currency = startCurrency.currency;
+    response.startCurrency = startCurrency.currency;
   }
   if (!!endCurrency.error) {
     errors.push(endCurrency.error);
   } else {
-    response.end_currency = endCurrency.currency;
+    response.endCurrency = endCurrency.currency;
   }
   if (!!startDate.error) {
     errors.push(startDate.error);
   } else {
-    response.start_date = startDate;
+    response.startDate = startDate;
   }
   if (!!endDate.error) {
     errors.push(endDate.error);

@@ -16,9 +16,9 @@ describe('Inflation controller tests: good requests', () => {
         .send();
     expect(res.statusCode).toEqual(200);
     expect(res.body).toEqual({
-      start_currency: 'usd',
-      end_currency: 'usd',
-      start_date: {
+      startCurrency: 'usd',
+      endCurrency: 'usd',
+      startDate: {
         year: 2020,
         month: 5,
       },
