@@ -1,6 +1,7 @@
 const parseDate = require('../parser/dateParser');
 const parseAmount = require('../parser/amountParser');
 const parseCurrency = require('../parser/currencyParser');
+const constants = require('../constants/validationConstants');
 
 module.exports = {validateRequest};
 
@@ -65,7 +66,7 @@ function constructResponse(
     response.endDate = endDate;
   }
   if (isEndDateBeforeStartDate(startDate, endDate)) {
-    errors.push('end_date must be after start_date');
+    errors.push(constants.endDateBeforeStartDate());
   }
   if (!!amount.error) {
     errors.push(amount.error);
@@ -74,7 +75,7 @@ function constructResponse(
   }
   return errors.length == 0 ?
           response :
-          {message: 'There was an error with the request', errors: errors};
+          {message: constants.errorWithRequest(), errors: errors};
 }
 
 /**
@@ -102,8 +103,8 @@ function isEndDateBeforeStartDate(startDate, endDate) {
  * @return {JSON} The parsed value (could contain error)
  */
 function validateCurrency(paramName, rawCurrency) {
-  if (rawCurrency == null) {
-    return {error: paramName + ' is missing'};
+  if (rawCurrency == null || rawCurrency === '') {
+    return {error: constants.paramMissing(paramName)};
   }
   return padWithParam(paramName, parseCurrency(rawCurrency));
 }
@@ -116,8 +117,8 @@ function validateCurrency(paramName, rawCurrency) {
  * @return {JSON} The parsed value (could contain error)
  */
 function validateDate(paramName, rawDate) {
-  if (rawDate == null) {
-    return {error: paramName + ' is missing'};
+  if (rawDate == null || rawDate === '') {
+    return {error: constants.paramMissing(paramName)};
   }
   return padWithParam(paramName, parseDate(rawDate));
 }
@@ -130,8 +131,8 @@ function validateDate(paramName, rawDate) {
  * @return {JSON} The parsed value (could contain error)
  */
 function validateAmount(paramName, rawAmount) {
-  if (rawAmount == null) {
-    return {error: paramName + ' is missing'};
+  if (rawAmount == null || rawAmount === '') {
+    return {error: constants.paramMissing(paramName)};
   }
   return padWithParam(paramName, parseAmount(rawAmount));
 }

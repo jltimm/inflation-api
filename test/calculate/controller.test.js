@@ -274,6 +274,23 @@ describe('Inflation controller tests: bad requests', () => {
       ],
     });
   });
+  test('Bad request: All values empty', async () => {
+    const request = getRequestParams('', '', '', '', '');
+    const res = await global.agent
+        .get(request)
+        .send();
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toEqual({
+      message: 'There was an error with the request',
+      errors: [
+        'start_currency is missing',
+        'end_currency is missing',
+        'start_date is missing',
+        'end_date is missing',
+        'amount is missing',
+      ],
+    });
+  });
 });
 
 afterEach(async () => {
