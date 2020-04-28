@@ -1,6 +1,7 @@
 const express = require('express');
 const calculateRouter = new express.Router();
 const validationService = require('../validation/requestValidator.js');
+const calculateService = require('./service');
 
 calculateRouter.get('/', getInflationRate);
 module.exports = calculateRouter;
@@ -17,5 +18,5 @@ function getInflationRate(req, res) {
     res.status(400).send(response);
     return;
   }
-  res.send(response);
+  res.send(calculateService.getInflationRate(response));
 }

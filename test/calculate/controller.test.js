@@ -10,7 +10,7 @@ beforeEach(async () => {
 
 describe('Inflation controller tests: good requests', () => {
   test('Good request, correct response found', async () => {
-    const request = getRequestParams('USD', 'USD', '2020-05', '2020-06', '123');
+    const request = getRequestParams('USD', 'USD', '2019-01', '2020-02', '100');
     const res = await global.agent
         .get(request)
         .send();
@@ -19,14 +19,16 @@ describe('Inflation controller tests: good requests', () => {
       startCurrency: 'usd',
       endCurrency: 'usd',
       startDate: {
-        year: 2020,
-        month: 5,
+        year: 2019,
+        month: 1,
       },
       endDate: {
         year: 2020,
-        month: 6,
+        month: 2,
       },
-      amount: 123,
+      amount: 100,
+      percentChange: 2.77,
+      result: 102.77,
     });
   });
 });
