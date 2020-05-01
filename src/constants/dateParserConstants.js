@@ -7,7 +7,7 @@ module.exports = {mustBeYYYYMM, invalidCharacters, invalidMonth, yearZero};
  * @return {String} The formatted error
  */
 function mustBeYYYYMM(value) {
-  return `[${value}] must be of the form YYYY-MM`;
+  return `[${value}] must be of the form YYYY-MM or YYYY`;
 }
 
 /**

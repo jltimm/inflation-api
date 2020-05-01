@@ -78,7 +78,7 @@ describe('Inflation controller tests: bad requests', () => {
     });
   });
   test('Bad request: start_date not of form YYYY-MM', async () => {
-    const request = getRequestParams('USD', 'USD', '200101', '2020-01', '1.0');
+    const request = getRequestParams('USD', 'USD', '200-1-2', '2020-01', '1.0');
     const res = await global.agent
         .get(request)
         .send();
@@ -86,7 +86,7 @@ describe('Inflation controller tests: bad requests', () => {
     expect(res.body).toEqual({
       message: 'There was an error with the request',
       errors: [
-        'start_date: [200101] must be of the form YYYY-MM',
+        'start_date: [200-1-2] must be of the form YYYY-MM or YYYY',
       ],
     });
   });
@@ -156,7 +156,7 @@ describe('Inflation controller tests: bad requests', () => {
     });
   });
   test('Bad request: end_date not of form YYYY-MM', async () => {
-    const request = getRequestParams('USD', 'USD', '2001-01', '202001', '1.0');
+    const request = getRequestParams('USD', 'USD', '2001-01', '202-1-1', '1.0');
     const res = await global.agent
         .get(request)
         .send();
@@ -164,7 +164,7 @@ describe('Inflation controller tests: bad requests', () => {
     expect(res.body).toEqual({
       message: 'There was an error with the request',
       errors: [
-        'end_date: [202001] must be of the form YYYY-MM',
+        'end_date: [202-1-1] must be of the form YYYY-MM or YYYY',
       ],
     });
   });
@@ -259,7 +259,7 @@ describe('Inflation controller tests: bad requests', () => {
       ],
     });
   });
-  test('Bad request: Issues with ever parameter', async () => {
+  test('Bad request: Issues with every parameter', async () => {
     const request = getRequestParams('US', 'U', 'abcd-a', '2020/01', '-2.0');
     const res = await global.agent
         .get(request)
@@ -271,7 +271,7 @@ describe('Inflation controller tests: bad requests', () => {
         'start_currency: [US] is not a supported currency',
         'end_currency: [U] is not a supported currency',
         'start_date: [abcd-a] contains invalid characters',
-        'end_date: [2020/01] must be of the form YYYY-MM',
+        'end_date: [2020/01] contains invalid characters',
         'amount: [-2.0] must be greater than zero',
       ],
     });

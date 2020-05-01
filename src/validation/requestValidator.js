@@ -88,7 +88,8 @@ function constructResponse(
 function isEndDateBeforeStartDate(startDate, endDate) {
   if (!endDate.error && !startDate.error) {
     if (endDate.year < startDate.year ||
-       (endDate.year == startDate.year && (endDate.month < startDate.month))) {
+       (endDate.year == startDate.year &&
+        (!!startDate.month ? endDate.month < startDate.month : false))) {
       return true;
     }
   }

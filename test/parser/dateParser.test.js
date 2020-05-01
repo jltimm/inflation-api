@@ -2,8 +2,10 @@ const parseDate = require('../../src/parser/dateParser');
 
 describe('Date parser: Invalid dates', () => {
   test('Does not contain \'-\'', () => {
-    const date = parseDate('2020/02');
-    expect(date).toEqual({error: '[2020/02] must be of the form YYYY-MM'});
+    const date = parseDate('2020-02-01');
+    expect(date).toEqual(
+        {error: '[2020-02-01] must be of the form YYYY-MM or YYYY'},
+    );
   });
   test('Month greater than 12', () => {
     const date = parseDate('2020-13');
@@ -59,5 +61,9 @@ describe('Date parser: Valid dates', () => {
   test('Year and month both one digit', () => {
     const date = parseDate('1-1');
     expect(date).toEqual({year: 1, month: 1});
+  });
+  test('Optional month param not present', () => {
+    const date = parseDate('2019');
+    expect(date).toEqual({year: 2019});
   });
 });
