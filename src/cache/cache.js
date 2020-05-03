@@ -1,5 +1,6 @@
 const NodeCache = require('node-cache');
 const usdData = require('../../data/usd.json');
+const cadData = require('../../data/cad.json');
 
 /**
  * Class that holds the cache
@@ -68,6 +69,7 @@ class Cache {
    */
   initialize() {
     this.loadCache('usd', usdData);
+    this.loadCache('cad', cadData);
   }
 }
 

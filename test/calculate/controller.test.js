@@ -31,6 +31,28 @@ describe('Inflation controller tests: good requests', () => {
       result: 102.77,
     });
   });
+  test('Good request, correct response found, CAD', async () => {
+    const request = getRequestParams('CAD', 'CAD', '2010-03', '2019-03', '100');
+    const res = await global.agent
+        .get(request)
+        .send();
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual({
+      startCurrency: 'cad',
+      endCurrency: 'cad',
+      startDate: {
+        year: 2010,
+        month: 3,
+      },
+      endDate: {
+        year: 2019,
+        month: 3,
+      },
+      amount: 100,
+      percentChange: 17.13,
+      result: 117.13,
+    });
+  });
 });
 
 describe('Inflation controller tests: bad requests', () => {

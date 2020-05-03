@@ -12,7 +12,7 @@ module.exports = parseCurrency;
 function parseCurrency(rawCurrency) {
   const currency = rawCurrency.toLowerCase().trim();
   // TODO: Temporary. Grab list from database later
-  if (currency !== 'usd') {
+  if (currency !== 'usd' && currency !== 'cad') {
     return {error: constants.notSupported(rawCurrency)};
   }
   return {currency: currency};
