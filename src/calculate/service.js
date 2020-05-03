@@ -1,4 +1,4 @@
-const usdData = require('../../data/usd.json');
+const cache = require('../cache/cache');
 
 module.exports = {getInflationRate};
 
@@ -9,9 +9,16 @@ module.exports = {getInflationRate};
  * @return {JSON} The response
  */
 function getInflationRate(request) {
-  const startPrice =
-      usdData[request.startDate.year][request.startDate.month - 1];
-  const endPrice = usdData[request.endDate.year][request.endDate.month - 1];
+  const startPrice = cache.get(
+      request.startCurrency,
+      request.startDate.year,
+      request.startDate.month,
+  );
+  const endPrice = cache.get(
+      request.endCurrency,
+      request.endDate.year,
+      request.endDate.month,
+  );
   const multiplyingFactor = endPrice / startPrice;
   const percent = ((endPrice - startPrice) / startPrice) * 100.0;
   const inflatedAmount = request.amount * multiplyingFactor;
