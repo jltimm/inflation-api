@@ -1,4 +1,10 @@
-module.exports = {mustBeYYYYMM, invalidCharacters, invalidMonth, yearZero};
+module.exports ={
+  mustBeYYYYMMDD,
+  invalidCharacters,
+  invalidMonth,
+  yearZero,
+  invalidDays,
+};
 
 /**
  * Returns the bad format error
@@ -6,8 +12,8 @@ module.exports = {mustBeYYYYMM, invalidCharacters, invalidMonth, yearZero};
  * @param {String} value The bad value
  * @return {String} The formatted error
  */
-function mustBeYYYYMM(value) {
-  return `[${value}] must be of the form YYYY-MM or YYYY`;
+function mustBeYYYYMMDD(value) {
+  return `[${value}] must be of the form YYYY-MM-DD, YYYY-MM, or YYYY`;
 }
 
 /**
@@ -38,4 +44,14 @@ function invalidMonth(value) {
  */
 function yearZero(value) {
   return `[${value}] year must not be zero`;
+}
+
+/**
+ * Returns the invalid years error
+ *
+ * @param {String} value The bad value
+ * @return {String} The formatted error
+ */
+function invalidDays(value) {
+  return `[${value}] has an invalid day for the given month and year`;
 }

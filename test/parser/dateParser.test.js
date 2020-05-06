@@ -1,10 +1,11 @@
 const parseDate = require('../../src/parser/dateParser');
 
 describe('Date parser: Invalid dates', () => {
-  test('Does not contain \'-\'', () => {
-    const date = parseDate('2020-02-01');
+  test('4 arguments given', () => {
+    const date = parseDate('2020-02-01-01');
     expect(date).toEqual(
-        {error: '[2020-02-01] must be of the form YYYY-MM or YYYY'},
+        {error: '[2020-02-01-01] must be of the form ' +
+                'YYYY-MM-DD, YYYY-MM, or YYYY'},
     );
   });
   test('Month greater than 12', () => {
@@ -30,6 +31,24 @@ describe('Date parser: Invalid dates', () => {
   test('Year is negative zero', () => {
     const date = parseDate('-0-01');
     expect(date).toEqual({error: '[-0-01] year must not be zero'});
+  });
+  test('Month/day combination is invalid: 32 days', () => {
+    const date = parseDate('2019-01-32');
+    expect(date).toEqual({
+      error: '[2019-01-32] has an invalid day for the given month and year',
+    });
+  });
+  test('Month/day combination is invalid: 29 days, not a leap year', () => {
+    const date = parseDate('1900-02-29');
+    expect(date).toEqual({
+      error: '[1900-02-29] has an invalid day for the given month and year',
+    });
+  });
+  test('Month/day combination is invalid: month does not have 31 days', () => {
+    const date = parseDate('2016-06-31');
+    expect(date).toEqual({
+      error: '[2016-06-31] has an invalid day for the given month and year',
+    });
   });
 });
 
@@ -65,5 +84,21 @@ describe('Date parser: Valid dates', () => {
   test('Optional month param not present', () => {
     const date = parseDate('2019');
     expect(date).toEqual({year: 2019});
+  });
+  test('Year/month/day is valid', () => {
+    const date = parseDate('2016-01-31');
+    expect(date).toEqual({year: 2016, month: 1, day: 31});
+  });
+  test('Date is leap year', () => {
+    const date = parseDate('2016-02-29');
+    expect(date).toEqual({year: 2016, month: 2, day: 29});
+  });
+  test('Date is leap year, 2000', () => {
+    const date = parseDate('2000-02-29');
+    expect(date).toEqual({year: 2000, month: 2, day: 29});
+  });
+  test('Normal year/month/date', () => {
+    const date = parseDate('2020-05-06');
+    expect(date).toEqual({year: 2020, month: 5, day: 6});
   });
 });

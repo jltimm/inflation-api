@@ -100,7 +100,9 @@ describe('Inflation controller tests: bad requests', () => {
     });
   });
   test('Bad request: start_date not of form YYYY-MM', async () => {
-    const request = getRequestParams('USD', 'USD', '200-1-2', '2020-01', '1.0');
+    const request = getRequestParams(
+        'USD', 'USD', '200-1-2-3', '2020-01', '1.0',
+    );
     const res = await global.agent
         .get(request)
         .send();
@@ -108,7 +110,8 @@ describe('Inflation controller tests: bad requests', () => {
     expect(res.body).toEqual({
       message: 'There was an error with the request',
       errors: [
-        'start_date: [200-1-2] must be of the form YYYY-MM or YYYY',
+        'start_date: [200-1-2-3] must be of the form ' +
+        'YYYY-MM-DD, YYYY-MM, or YYYY',
       ],
     });
   });
@@ -178,7 +181,9 @@ describe('Inflation controller tests: bad requests', () => {
     });
   });
   test('Bad request: end_date not of form YYYY-MM', async () => {
-    const request = getRequestParams('USD', 'USD', '2001-01', '202-1-1', '1.0');
+    const request = getRequestParams(
+        'USD', 'USD', '2001-01', '202-1-1-1', '1.0',
+    );
     const res = await global.agent
         .get(request)
         .send();
@@ -186,7 +191,8 @@ describe('Inflation controller tests: bad requests', () => {
     expect(res.body).toEqual({
       message: 'There was an error with the request',
       errors: [
-        'end_date: [202-1-1] must be of the form YYYY-MM or YYYY',
+        'end_date: [202-1-1-1] must be of the form ' +
+        'YYYY-MM-DD, YYYY-MM, or YYYY',
       ],
     });
   });
@@ -278,6 +284,47 @@ describe('Inflation controller tests: bad requests', () => {
       message: 'There was an error with the request',
       errors: [
         'amount: [-1] must be greater than zero',
+      ],
+    });
+  });
+  test('Bad request: end date year before start date year', async () => {
+    const request = getRequestParams('USD', 'USD', '2016', '2015', '100');
+    const res = await global.agent
+        .get(request)
+        .send();
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toEqual({
+      message: 'There was an error with the request',
+      errors: [
+        'end_date must be after start_date',
+      ],
+    });
+  });
+  test('Bad request: end date month before start date month', async () => {
+    const request = getRequestParams('USD', 'USD', '2016-02', '2016-01', '100');
+    const res = await global.agent
+        .get(request)
+        .send();
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toEqual({
+      message: 'There was an error with the request',
+      errors: [
+        'end_date must be after start_date',
+      ],
+    });
+  });
+  test('Bad request: end date day before start date day', async () => {
+    const request = getRequestParams(
+        'USD', 'USD', '2016-02-02', '2016-02-01', '100',
+    );
+    const res = await global.agent
+        .get(request)
+        .send();
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toEqual({
+      message: 'There was an error with the request',
+      errors: [
+        'end_date must be after start_date',
       ],
     });
   });

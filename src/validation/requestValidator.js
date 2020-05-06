@@ -87,10 +87,24 @@ function constructResponse(
  */
 function isEndDateBeforeStartDate(startDate, endDate) {
   if (!endDate.error && !startDate.error) {
-    if (endDate.year < startDate.year ||
-       (endDate.year == startDate.year &&
-        (!!startDate.month ? endDate.month < startDate.month : false))) {
+    if (endDate.year < startDate.year) {
       return true;
+    }
+    if (endDate.year == startDate.year) {
+      if (!startDate.month || !endDate.month) {
+        return false;
+      }
+      if (endDate.month < startDate.month) {
+        return true;
+      }
+      if (endDate.month == startDate.month) {
+        if (!startDate.day || !startDate.day) {
+          return false;
+        }
+        if (endDate.day < startDate.day) {
+          return true;
+        }
+      }
     }
   }
   return false;
